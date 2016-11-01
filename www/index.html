@@ -36,12 +36,15 @@
 
     <ion-pane>
       <ion-header-bar class="bar-stable">
-        <h1 class="title">Ionic Blank Starter</h1>
+        <h1 class="title">Ionic Facisa</h1>
       </ion-header-bar>
       <ion-content ng-controller="chatController">
     		
         <div class="list">
-
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Nome:</span>
+            <input type="text" placeholder="Digite aqui seu nome" ng-model="nome">
+          </label>
           <div class="item item-input-inset">
             <label class="item-input-wrapper">
               <input type="text" placeholder="Digite sua mensagem" ng-model="texto">
@@ -55,7 +58,7 @@
 
         <ion-list>
     			<ion-item ng-repeat="item in items">
-    				{{item}}
+    				{{item.val.hora}} - {{item.val.nome}} diz: {{item.val.texto}}
     			</ion-item>
     		</ion-list>
 

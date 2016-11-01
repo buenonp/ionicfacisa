@@ -6,14 +6,25 @@
 var app = angular.module('starter', ['ionic'])
 
 app.controller('chatController', function($scope) {
- 
-  firebase.database().ref('mensagens').on('value', function(snapshot) {
-    $scope.items = Object.keys(snapshot.val()).map(function (key) { return snapshot.val()[key]; });
-    $scope.$apply();
+
+  $scope.items = [];
+
+  firebase.database().ref('mensagens').once('value').then(function(data) {
+    if(data.val()){
+      $scope.items = Object.keys(data.val()).map(function (key) { return {key: key, val: data.val()[key]}; });
+      $scope.$apply();
+    }
+  });
+
+  firebase.database().ref('mensagens').on('child_added', function(data) {
+    $scope.items.push({key: data.key, val: data.val()});
   });
 
   $scope.enviarMensagem = function() {
-    firebase.database().ref().child('mensagens').push($scope.texto);
+    var data = new Date();
+    var hora = data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds();
+    firebase.database().ref().child('mensagens').push({hora: hora,texto:$scope.texto, nome:$scope.nome});
+    $scope.texto = '';
   };
 
 });
